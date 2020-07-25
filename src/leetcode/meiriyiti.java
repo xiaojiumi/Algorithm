@@ -61,12 +61,47 @@ public class meiriyiti {
         return dp[n-1][m-1];
     }
 
-    @Test
-    public void t1(){
-        LinkedList<Integer> a= new LinkedList<>();
-        a.add(1);
-        a.add(2);
-        a.add(3);
-        System.out.println(a.peek());
+    public boolean divisorGame(int N) {
+        boolean[] dp=new boolean[N+1];
+        dp[1]=false;
+        dp[2]=true;
+        for (int i=3;i<=N;i++){
+            for (int j=1;j<i;j++){
+                if ((i%j)==0&&!dp[i-j]){
+                    dp[i]=true;
+                    break;
+                }
+            }
+        }
+        return dp[N];
+    }
+
+    public int splitArray(int[] nums, int m) {
+        int n = nums.length;
+        int[][] f = new int[n + 1][m + 1];
+        for (int i = 0; i <= n; i++) {
+            Arrays.fill(f[i], Integer.MAX_VALUE);
+        }
+        int[] sub = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            sub[i + 1] = sub[i] + nums[i];
+        }
+        f[0][0] = 0;
+//        for (int i=1;i<=n;i++){
+//            for (int j=1;i<=Math.min(i,m);j++){
+//                for (int k=0;k<i;k++){
+//                    f[i][j]=Math.min(f[i][j],Math.max(f[k][j-1],sub[i]-sub[k]));
+//                }
+//            }
+//        }
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= Math.min(i, m); j++) {
+                for (int k = 0; k < i; k++) {
+                    f[i][j] = Math.min(f[i][j], Math.max(f[k][j - 1], sub[i] - sub[k]));
+                }
+            }
+        }
+
+        return f[n][m];
     }
 }
