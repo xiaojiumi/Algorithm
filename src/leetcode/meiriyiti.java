@@ -87,13 +87,6 @@ public class meiriyiti {
             sub[i + 1] = sub[i] + nums[i];
         }
         f[0][0] = 0;
-//        for (int i=1;i<=n;i++){
-//            for (int j=1;i<=Math.min(i,m);j++){
-//                for (int k=0;k<i;k++){
-//                    f[i][j]=Math.min(f[i][j],Math.max(f[k][j-1],sub[i]-sub[k]));
-//                }
-//            }
-//        }
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= Math.min(i, m); j++) {
                 for (int k = 0; k < i; k++) {
@@ -146,5 +139,22 @@ public class meiriyiti {
             if (index==-1)return false;
         }
         return true;
+    }
+
+    public int integerBreak(int n) {
+        int[] dp=new int[n+1];
+        for (int i=2;i<=n;i++){
+            int temp=0;
+            for (int j=1;j<i;j++){
+                temp=Math.max(temp,Math.max(j*(i-j),j*dp[i-j]));
+            }
+            dp[i]=temp;
+        }
+        return dp[n];
+    }
+
+    public int maxDepth(TreeNode root) {
+        if(root==null)return 0;
+        return Math.max(maxDepth(root.left),maxDepth(root.right))+1;
     }
 }
