@@ -157,4 +157,22 @@ public class meiriyiti {
         if(root==null)return 0;
         return Math.max(maxDepth(root.left),maxDepth(root.right))+1;
     }
+
+    int magicIndex=-1;
+    public int findMagicIndex(int[] nums) {
+        search(nums,0,nums.length-1);
+        return magicIndex;
+    }
+
+    public void search(int[] nums,int left,int right){
+        if (left>right)return ;
+        int mid=(left+right)/2;
+        if (nums[mid]==mid){
+            magicIndex=mid;
+            search(nums,left,mid-1);
+        }else {
+            search(nums,left,mid-1);
+            if (magicIndex==-1)search(nums,mid+1,right);
+        }
+    }
 }
