@@ -2,11 +2,9 @@ package leetcode;
 
 import com.sun.tracing.dtrace.ArgsAttributes;
 import org.junit.Test;
+import sun.reflect.generics.tree.Tree;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class meiriyiti {
 
@@ -173,6 +171,41 @@ public class meiriyiti {
         }else {
             search(nums,left,mid-1);
             if (magicIndex==-1)search(nums,mid+1,right);
+        }
+    }
+
+//    public void flatten(TreeNode root) {
+//        List<TreeNode> list=new ArrayList<>();
+//        preOrder(root,list);
+//        int size=list.size();
+//        for (int i=1;i<size;i++){
+//            TreeNode prev=list.get(i-1);
+//            TreeNode cur=list.get(i);
+//            prev.left=null;
+//            prev.right=cur;
+//        }
+//    }
+//
+//    public void preOrder(TreeNode root,List<TreeNode> list){
+//        if (root!=null){
+//            list.add(root);
+//            preOrder(root.left,list);
+//            preOrder(root.right,list);
+//        }
+//    }
+
+    public void flatten(TreeNode root){
+        while (root!=null){
+            if (root.left != null) {
+                TreeNode pre = root.left;
+                while (pre.right != null) {
+                    pre = pre.right;
+                }
+                pre.right = root.right;
+                root.right = root.left;
+                root.left = null;
+            }
+            root=root.right;
         }
     }
 }
