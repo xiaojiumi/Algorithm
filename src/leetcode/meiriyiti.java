@@ -208,4 +208,45 @@ public class meiriyiti {
             root=root.right;
         }
     }
+
+    public String addStrings(String num1, String num2) {
+        int n=num1.length(),m=num2.length();
+        StringBuffer sb=new StringBuffer();
+        int i=n-1,j=m-1;
+        int carry=0;
+        while (i>=0||j>=0){
+            int a=i>=0? num1.charAt(i)-'0' :0;
+            int b=j>=0?num2.charAt(j)-'0':0;
+            int sum=a+b+carry;
+            sb.append(sum%10);
+            carry=sum/10;
+            i--;
+            j--;
+        }
+        if (carry!=0)sb.append(carry);
+        return sb.reverse().toString();
+    }
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int[] indegrees=new int[numCourses];
+        List<List<Integer>> adjacency=new ArrayList<>();
+        Queue<Integer> queue=new ArrayDeque<>();
+        for (int i=0;i<numCourses;i++)adjacency.add(new ArrayList<>());
+        for (int[] p:prerequisites){
+            indegrees[p[0]]++;
+            adjacency.get(p[1]).add(p[0]);
+        }
+        for (int i=0;i<numCourses;i++){
+            if (indegrees[i]==0)queue.add(i);
+        }
+        while (!queue.isEmpty()){
+            int pre=queue.poll();
+            numCourses--;
+            for (int cur:adjacency.get(pre)){
+                indegrees[cur]--;
+                if (indegrees[cur]==0)queue.add(cur);
+            }
+        }
+        return numCourses==0;
+    }
 }
