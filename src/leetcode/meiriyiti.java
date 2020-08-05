@@ -249,4 +249,19 @@ public class meiriyiti {
         }
         return numCourses==0;
     }
+
+    public int rob(TreeNode root) {
+        int[] result=robHelp(root);
+        return Math.max(result[0],result[1]);
+    }
+
+    public int[] robHelp(TreeNode root){
+        if (root==null)return new int[2];
+        int[] result=new int[2];
+        int[] left=robHelp(root.left);
+        int[] right=robHelp(root.right);
+        result[0]=Math.max(left[0], left[1] )+Math.max(right[0], right[1] );
+        result[1]=left[0]+ right[0]+root.val;
+        return result;
+    }
 }
