@@ -297,5 +297,21 @@ public class meiriyiti {
         return result;
     }
 
-
+    public int countBinarySubstrings(String s) {
+        int[] array=new int[s.length()];
+        array[0]=1;
+        int index=0;
+        for (int i=1;i<s.length();i++){
+            if (s.charAt(i)==s.charAt(i-1)){
+                array[index]++;
+            }else {
+                array[++index]=1;
+            }
+        }
+        int ans=0;
+        for (int i=1;i<array.length;i++){
+            ans+=Math.min(array[i-1],array[i]);
+        }
+        return ans;
+    }
 }
