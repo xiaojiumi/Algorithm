@@ -265,11 +265,6 @@ public class meiriyiti {
         return result;
     }
 
-    public static void main(String[] args) {
-        meiriyiti m=new meiriyiti();
-        m.restoreIpAddresses("25525511135");
-    }
-
 
     public List<String> restoreIpAddresses(String s) {
         List<String> result=new ArrayList<>();
@@ -361,5 +356,35 @@ public class meiriyiti {
             cloneNode.neighbors.add(cloneGraph(neigh));
         }
         return cloneNode;
+    }
+
+    @Test
+    public void t1(){
+        meiriyiti m=new meiriyiti();
+        System.out.println(12%10);
+    }
+
+    public String multiply(String num1, String num2) {
+        if(num1.equals("0")||num2.equals("0"))return "0";
+        int n=num1.length(),m=num2.length();
+        int[] nums=new int[n+m];
+        for (int i=n-1;i>=0;i--){
+            int x = num1.charAt(i) - '0';
+            for (int j=m-1;j>=0;j--){
+                int y = num2.charAt(j) - '0';
+                nums[i+j+1]+=x*y;
+            }
+        }
+        for (int i=m+n-1;i>0;i--){
+            nums[i-1]+=nums[i]/10;
+            nums[i]%=10;
+        }
+        StringBuilder sb=new StringBuilder();
+        int index=nums[0]==0?1:0;
+        while (index<m+n){
+            sb.append(nums[index]);
+            index++;
+        }
+        return sb.toString();
     }
 }
