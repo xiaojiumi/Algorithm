@@ -398,4 +398,26 @@ public class meiriyiti {
         }
         return stack.isEmpty();
     }
+
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        int start= image[sr][sc];
+        if (start==newColor)return image;
+        int[] dx={1,-1,0,0};
+        int[] dy={0,0,1,-1};
+        Queue<int[]> queue=new LinkedList<>();
+        queue.add(new int[]{sr,sc});
+        while (!queue.isEmpty()){
+            int[] poll = queue.poll();
+            int x= poll[0],y=poll[1];
+            image[x][y]=newColor;
+            for (int i=0;i<4;i++){
+                int newX=x+dx[i],newY=y+dy[i];
+                if (newX>=0&&newX<image.length&&newY>=0&&newY<image[0].length
+                &&image[newX][newY]==start){
+                    queue.add(new int[]{newX,newY});
+                }
+            }
+        }
+        return image;
+    }
 }
