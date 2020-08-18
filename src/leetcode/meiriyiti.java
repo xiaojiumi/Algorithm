@@ -420,4 +420,60 @@ public class meiriyiti {
         }
         return image;
     }
+
+    boolean ans=true;
+    public boolean isBalanced(TreeNode root) {
+        getHeight(root);
+        return ans;
+    }
+
+    public int getHeight(TreeNode root){
+        if (root==null)return 0;
+        int l=getHeight(root.left);
+        int r=getHeight(root.right);
+        if (Math.abs(l-r)>1)ans=false;
+        return Math.max(l,r)+1;
+    }
+
+
+
+//    public TreeNode sortedListToBST(ListNode head) {
+//        return build(head,null);
+//    }
+//
+//    public TreeNode build(ListNode left,ListNode right){
+//        if(left==right)return null;
+//        ListNode mid=getMid(left,right);
+//        TreeNode root = new TreeNode(mid.val);
+//        root.left=build(left,mid);
+//        root.right=build(mid.next,right);
+//        return root;
+//    }
+//
+//    public ListNode getMid(ListNode left,ListNode right){
+//        ListNode fast=left,slow=left;
+//        while (fast!=right&&fast.next!=right){
+//            fast=fast.next.next;
+//            slow=slow.next;
+//        }
+//        return slow;
+//    }
+    public TreeNode sortedListToBST(ListNode head) {
+        ArrayList<Integer> list = new ArrayList<>();
+        while (head!=null){
+            list.add(head.val);
+            head=head.next;
+        }
+        return getTree(list,0,list.size()-1);
+    }
+
+    public TreeNode getTree(ArrayList<Integer> list,int start,int end){
+        if (start>end)return null;
+        int mid=(start+end)/2;
+        TreeNode root=new TreeNode(list.get(mid));
+        root.left=getTree(list,start,mid-1);
+        root.right=getTree(list,mid+1,end);
+        return root;
+    }
+
 }
