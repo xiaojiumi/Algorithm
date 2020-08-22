@@ -1,10 +1,9 @@
 package leetcode;
 
-import com.sun.tracing.dtrace.ArgsAttributes;
 import org.junit.Test;
-import sun.reflect.generics.tree.Tree;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class meiriyiti {
 
@@ -476,4 +475,108 @@ public class meiriyiti {
         return root;
     }
 
+    public int countSubstrings(String s) {
+        int ans=0;
+        for (int i=0;i<s.length();i++){
+            ans+=helper(s,i,i);
+            ans+=helper(s,i,i+1);
+        }
+        return ans;
+    }
+
+    public int helper(String s,int start,int end){
+        int temp=0;
+        while (start>=0&&end<s.length()&&s.charAt(start)==s.charAt(end)){
+            start--;
+            end++;
+            temp++;
+        }
+        return temp;
+    }
+
+    int[] dirX={0,0,1,-1,1,1,-1,-1};
+    int[] dirY ={1,-1,0,0,1,-1,1,-1};
+    public char[][] updateBoard(char[][] board, int[] click) {
+        int x=click[0],y= click[1];
+        if (board[x][y]=='M'){
+            board[x][y]='X';
+        }else {
+            dfsBoard(board,x,y);
+        }
+        return board;
+    }
+
+    public void dfsBoard(char[][] board,int x,int y){
+        int count=0;
+        for (int i=0;i<8;i++){
+            int tx=x+dirX[i],ty=y+ dirY[i];
+            if (tx<0||tx>= board.length||ty<0||ty>= board[0].length)continue;
+            if (board[tx][ty]=='M'){
+                count++;
+            }
+        }
+        if (count>0){
+            board[x][y]=(char)(count+'0');
+        }else {
+            board[x][y]='B';
+            for (int i=0;i<8;i++){
+                int tx=x+dirX[i],ty=y+ dirY[i];
+                if (tx<0||tx>= board.length||
+                    ty<0||ty>= board[0].length||
+                    board[tx][ty]!='E')continue;
+                dfsBoard(board,tx,ty);
+            }
+        }
+    }
+
+    public int minDepth(TreeNode root) {
+        if(root==null)return 0;
+        if (root.left==null&&root.right==null)return 1;
+        int res=Integer.MAX_VALUE;
+        if (root.left!=null)res=Math.min(res,minDepth(root.left));
+        if (root.right!=null)res=Math.min(res,minDepth(root.right));
+        return res+1;
+    }
+
+    public boolean judgePoint24(int[] nums) {
+        ArrayList<Double> doubles = new ArrayList<>();
+        for (int a:nums){
+            doubles.add((double) a);
+        }
+        return helper(doubles);
+    }
+
+    public boolean helper(ArrayList<Double> arr){
+        if (arr.size()==0)return false;
+        if(arr.size()==1){
+            return Math.abs(arr.get(0)-24)<1e-6;
+        }
+        for (int i=0;i<arr.size();i++){
+            for (int j=0;j<arr.size();j++){
+                if(i!=j){
+                    ArrayList<Double> temp=new ArrayList<>();
+                    for (int k=0;k<arr.size();k++){
+                        if (k!=i&&k!=j){
+                            temp.add(arr.get(k));
+                        }
+                    }
+                    for (int k=0;k<4;k++){
+                        if (k==0)temp.add(arr.get(i)+arr.get(j));
+                        if (k==1)temp.add(arr.get(i)-arr.get(j));
+                        if (k==2)temp.add(arr.get(i)*arr.get(j));
+                        if (k==3){
+                            if (arr.get(j)!=0){
+                                temp.add(arr.get(i)/arr.get(j));
+                            }else {
+                                continue;
+                            }
+                        }
+                        if(helper(temp))return true;
+                        temp.remove(temp.size()-1);
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
