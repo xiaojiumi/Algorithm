@@ -658,4 +658,27 @@ public class meiriyiti {
         }
         return temp.size() >= 2;
     }
+
+    public List<String> letterCombinations(String digits) {
+        if (digits==null||digits.length()==0)return new ArrayList<>();
+        List<String> ans=new ArrayList<>();
+        String[] data={"abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        backtrack(digits,ans,new StringBuilder(),0,data);
+        return ans;
+    }
+
+    public void backtrack(String digits,List<String> ans,
+                          StringBuilder cur,int index,
+                          String[] data){
+        if (cur.length()== digits.length()){
+            ans.add(cur.toString());
+            return;
+        }
+        String s=data[digits.charAt(index)-'2'];
+        for (char c:s.toCharArray()){
+            cur.append(c);
+            backtrack(digits,ans,cur,index+1,data);
+            cur.deleteCharAt(cur.length()-1);
+        }
+    }
 }
