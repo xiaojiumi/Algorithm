@@ -608,11 +608,6 @@ public class meiriyiti {
         return (s+s).indexOf(s,1)!=s.length();
     }
 
-    public static void main(String[] args) {
-        meiriyiti m=new meiriyiti();
-        List<List<Integer>> subsequences = m.findSubsequences(new int[]{4, 6, 6, 7});
-        System.out.println(subsequences);
-    }
 
     List<Integer> temp = new ArrayList<Integer>();
     List<List<Integer>> res = new ArrayList<List<Integer>>();
@@ -680,5 +675,36 @@ public class meiriyiti {
             backtrack(digits,ans,cur,index+1,data);
             cur.deleteCharAt(cur.length()-1);
         }
+    }
+
+    public List<String> findItinerary(List<List<String>> tickets) {
+        Map<String,PriorityQueue<String>> map=new HashMap<>();
+        List<String> ans=new ArrayList<>();
+        for(List<String> ticket:tickets){
+            String src=ticket.get(0),det=ticket.get(1);
+            if (!map.containsKey(src)){
+                map.put(src,new PriorityQueue<>());
+            }
+            map.get(src).offer(det);
+        }
+        dfs("JFK",map,ans);
+        Collections.reverse(ans);
+        return ans;
+    }
+    public void dfs(String cur,Map<String,PriorityQueue<String>> map, List<String> ans){
+        while (map.containsKey(cur)&&map.get(cur).size()>0){
+            String temp=map.get(cur).poll();
+            dfs(temp,map,ans);
+        }
+        ans.add(cur);
+    }
+
+    public static void main(String[] args) {
+        PriorityQueue<String> p=new PriorityQueue<>();
+        p.offer("atl");
+        p.offer("sfo");
+
+        System.out.println(p);
+        System.out.println(p.poll());
     }
 }
