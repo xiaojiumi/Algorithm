@@ -699,12 +699,18 @@ public class meiriyiti {
         ans.add(cur);
     }
 
-    public static void main(String[] args) {
-        PriorityQueue<String> p=new PriorityQueue<>();
-        p.offer("atl");
-        p.offer("sfo");
-
-        System.out.println(p);
-        System.out.println(p.poll());
+    public boolean judgeCircle(String moves) {
+        int x=0,y=0;
+        for (char c:moves.toCharArray()){
+            if (c=='U')x++;
+            if (c=='D')x--;
+            if(c=='L')y--;
+            if (c=='R')y++;
+        }
+        return x==0&&y==0;
     }
+
+//    public String shortestPalindrome(String s) {
+//
+//    }
 }
