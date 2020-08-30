@@ -710,7 +710,9 @@ public class meiriyiti {
         return x==0&&y==0;
     }
 
-//    public String shortestPalindrome(String s) {
-//
-//    }
+    public String reverseWords(String s) {
+        return Arrays.stream(s.split(" ")).map(o->new StringBuffer(o).reverse().toString()).collect(Collectors.joining(" "));
+    }
+
+
 }
