@@ -714,5 +714,27 @@ public class meiriyiti {
         return Arrays.stream(s.split(" ")).map(o->new StringBuffer(o).reverse().toString()).collect(Collectors.joining(" "));
     }
 
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        Queue<Integer> queue=new LinkedList<>();
+        for (int i:rooms.get(0)){
+            queue.add(i);
+        }
+        Set<Integer> set=new HashSet<>();
+        boolean[] visited=new boolean[rooms.size()];
+        visited[0]=true;
+        set.add(0);
+        while (!queue.isEmpty()){
+            int temp=queue.poll();
+            if (!visited[temp]){
+                set.add(temp);
+                visited[temp]=true;
+                for (int i:rooms.get(temp)){
+                    queue.add(i);
+                }
+            }
+        }
+        return set.size()==rooms.size();
+    }
+
 
 }
