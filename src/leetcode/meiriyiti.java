@@ -780,4 +780,55 @@ public class meiriyiti {
         }
         return num;
     }
+    int line;
+    List<List<String>> results=new ArrayList<>();
+    public List<List<String>> solveNQueens(int n) {
+       this.line=(1<<n)-1;
+       huanghou(0,0,0,new ArrayList<>(),n);
+       return results;
+    }
+
+    public void huanghou(long c,long l,long r,List<String> cur,int n){
+        if (c!=line){
+            long place=line&(~c)&(~l)&(~r);
+            while (place!=0){
+                long p=place&(-place);
+                place-=p;
+                cur.add(generate(p,n));
+                huanghou(c+p,(l+p)<<1,(r+p)>>1,cur,n);
+                cur.remove(cur.size()-1);
+            }
+        }else {
+            results.add(new ArrayList<>(cur));
+        }
+    }
+
+    public static String generate(long num,int n){
+        StringBuilder sb=new StringBuilder();
+        for (int i=0;i<n;i++){
+            if ((num&1)==1)sb.append('Q');
+            else sb.append('.');
+            num>>>=1;
+        }
+        return sb.toString();
+    }
+
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> ans=new ArrayList<>();
+        dfs(ans,new StringBuilder(),root);
+        return ans;
+    }
+
+    public void dfs(List<String> ans,StringBuilder sb,TreeNode root){
+        if(root==null)return;
+        if (root.left==null&&root.right==null){
+            sb.append(root.val);
+            ans.add(sb.toString());
+            return;
+        }
+        sb.append(root.val);
+        sb.append("->");
+        dfs(ans,new StringBuilder(sb),root.left);
+        dfs(ans,new StringBuilder(sb),root.right);
+    }
 }
