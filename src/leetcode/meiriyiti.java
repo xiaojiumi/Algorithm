@@ -831,4 +831,41 @@ public class meiriyiti {
         dfs(ans,new StringBuilder(sb),root.left);
         dfs(ans,new StringBuilder(sb),root.right);
     }
+
+    public static void main(String[] args) {
+        meiriyiti m=new meiriyiti();
+        m.getPermutation(3,5);
+    }
+
+    public String getPermutation(int n, int k) {
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++)arr[i]=i+1;
+        return dfs(arr,new StringBuilder(),n,k,new boolean[n]);
+    }
+
+    public String dfs(int[] arr,StringBuilder sb,int n,int k,boolean[] b){
+        if (sb.length()==n){
+            return sb.toString();
+        }
+        int cur=factorial(n-sb.length()-1);
+        for (int i=0;i<n;i++){
+            if (b[i])continue;
+            if (cur<k){
+                k-=cur;
+                continue;
+            }
+            sb.append(arr[i]);
+            b[i]=true;
+            return dfs(arr,sb,n,k,b);
+        }
+        return null;
+    }
+
+    private int factorial(int n){
+        int res=1;
+        while (n>0){
+            res*=n--;
+        }
+        return res;
+    }
 }
