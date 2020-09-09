@@ -868,4 +868,81 @@ public class meiriyiti {
         }
         return res;
     }
+
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        if (root==null)return new ArrayList<>();
+        List<List<Integer>> ans =new ArrayList<>();
+        Queue<TreeNode> queue=new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()){
+            int n=queue.size();
+            ArrayList<Integer> temp = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                TreeNode poll = queue.poll();
+                temp.add(poll.val);
+                if (poll.left!=null)queue.add(poll.left);
+                if (poll.right!=null)queue.add(poll.right);
+            }
+            ans.add(temp);
+        }
+        Collections.reverse(ans);
+        return ans;
+    }
+
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for (int i:nums){
+            map.put(i,map.getOrDefault(i,0)+1);
+        }
+        PriorityQueue<Integer> queue=new PriorityQueue<>(Comparator.comparingInt(map::get));
+        for (Integer key:map.keySet()){
+            queue.add(key);
+            if (queue.size()>k){
+                queue.poll();
+            }
+        }
+        int[] ans=new int[k];
+        for (int i = 0; i < k; i++) {
+            ans[i]=queue.poll();
+        }
+        return ans;
+    }
+
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> ans=new ArrayList<>();
+        dfs(ans,new ArrayList<>(),n,k,1);
+        return ans;
+    }
+
+    public void dfs(List<List<Integer>> ans,List<Integer> cur,int n,int k,int start){
+        if (cur.size()==k){
+            ans.add(new ArrayList<>(cur));
+            return;
+        }
+        for (int i=start;i<=n;i++){
+            cur.add(i);
+            dfs(ans,cur,n,k,i+1);
+            cur.remove(cur.size()-1);
+        }
+    }
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> ans=new ArrayList<>();
+        Arrays.sort(candidates);
+        dfs(ans,candidates,target,new ArrayList<>(),0);
+        return ans;
+    }
+
+    public void dfs(List<List<Integer>> ans,int[] candidates, int target,List<Integer> cur,int index){
+        if (0==target){
+            ans.add(new ArrayList<>(cur));
+            return;
+        }
+        for (int i=index;i< candidates.length;i++){
+            if(target<candidates[i])break;
+            cur.add(candidates[i]);
+            dfs(ans,candidates,target-candidates[i],cur,i);
+            cur.remove(cur.size()-1);
+        }
+    }
 }
