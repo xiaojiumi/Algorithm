@@ -945,4 +945,26 @@ public class meiriyiti {
             cur.remove(cur.size()-1);
         }
     }
+
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res=new ArrayList<>();
+        Arrays.sort(candidates);
+        dfs(res,candidates,target,0,new ArrayList<>());
+
+        return res;
+    }
+
+    public void dfs(List<List<Integer>> ans,int[] candidates, int target,int index,List<Integer> cur){
+        if (target==0){
+            ans.add(new ArrayList<>(cur));
+            return;
+        }
+        for (int i=index;i< candidates.length;i++){
+            if (target< candidates[i])break;
+            if (i>index&&candidates[i]==candidates[i-1])continue;
+            cur.add(candidates[i]);
+            dfs(ans,candidates,target-candidates[i],i+1,cur);
+            cur.remove(cur.size()-1);
+        }
+    }
 }
