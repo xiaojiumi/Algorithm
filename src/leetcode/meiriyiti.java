@@ -832,10 +832,6 @@ public class meiriyiti {
         dfs(ans,new StringBuilder(sb),root.right);
     }
 
-    public static void main(String[] args) {
-        meiriyiti m=new meiriyiti();
-        m.getPermutation(3,5);
-    }
 
     public String getPermutation(int n, int k) {
         int[] arr=new int[n];
@@ -967,4 +963,94 @@ public class meiriyiti {
             cur.remove(cur.size()-1);
         }
     }
+
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> ans=new ArrayList<>();
+        Queue<TreeNode> queue=new LinkedList<TreeNode>(){{add(root);}};
+        while (!queue.isEmpty()){
+            int n=queue.size();
+            double sum=0;
+            for (int i=0;i<n;i++){
+                TreeNode poll = queue.poll();
+                sum+= poll.val;
+                if (poll.left!=null)queue.add(poll.left);
+                if(poll.right!=null)queue.add(poll.right);
+            }
+            ans.add(sum/n);
+        }
+        return ans;
+    }
+
+    int[] dX={1,-1,0,0};
+    int[] dy={0,0,1,-1};
+
+    public boolean exist(char[][] board, String word) {
+        if (word==null||word.length()==0)return true;
+        if (board==null||board.length==0||board[0].length==0)return false;
+        for (int i=0;i< board.length;i++){
+            for (int j=0;j< board[0].length;j++){
+                if (  dfs(board,word,0,new boolean[board.length][board[0].length],i,j)) return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean dfs(char[][] board, String word,int len,boolean[][] b,int i,int j){
+        if(len==word.length()){
+            return true;
+        }
+
+        if(i<0||i>=board.length||j<0||j>=board[0].length||board[i][j]!=word.charAt(len)||b[i][j]){
+            return false;
+        }
+        b[i][j]=true;
+        for (int[] d:dirs){
+            if (dfs(board,word,len+1,b,i+d[0],j+d[1]))return true;
+        }
+        b[i][j]=false;
+        return false;
+    }
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> ans=new ArrayList<>();
+        inOrder(ans,root);
+        return ans;
+    }
+
+    public void inOrder(List<Integer> ans,TreeNode root){
+        if(root==null)return;
+        inOrder(ans,root.left);
+        ans.add(root.val);
+        inOrder(ans,root.right);
+    }
+
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> ans=new ArrayList<>();
+        dfs(nums,ans,new ArrayList<>(),new boolean[nums.length]);
+        return ans;
+    }
+
+    public void dfs(int[] nums,List<List<Integer>> ans,List<Integer> cur,boolean[] b){
+        if(cur.size()==nums.length){
+            ans.add(new ArrayList<>(cur));
+            return;
+        }
+        for (int i=0;i<nums.length;i++){
+            if (b[i])continue;
+            if (i>0&&nums[i]==nums[i-1]&&b[i-1])continue;
+            cur.add(nums[i]);
+            b[i]=true;
+            dfs(nums,ans,cur,b);
+            cur.remove(cur.size()-1);
+            b[i]=false;
+        }
+    }
+
+    public static void main(String[] args) {
+        meiriyiti m=new meiriyiti();
+        int[] arr={1,1,2};
+        m.permuteUnique(arr);
+    }
+
 }
