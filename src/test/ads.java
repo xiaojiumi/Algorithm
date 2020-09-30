@@ -1,15 +1,16 @@
 package test;
 
-import java.util.LinkedList;
+import javax.swing.tree.TreeNode;
+import java.util.*;
 
-public class ads {
-    
-
+public  class ads  {
+    static {
+        i=20;
+    }
+    public static int i=10;
     public static void main(String[] args) {
-        char[][] chars=new char[2][3];
-        char[] c={'a','b','c'};
-        chars[0]=c;
-        System.out.println(chars);
+        System.out.println(i);
     }
 }
+
 

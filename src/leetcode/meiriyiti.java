@@ -1162,4 +1162,57 @@ public class meiriyiti {
         if (p.val>root.val&&q.val>root.val) return lowestCommonAncestor(root.right,p,q);
         return root;
     }
+
+//    public Node connect(Node root) {
+//        if (root==null)return null;
+//        Queue<Node> queue=new LinkedList<Node>(){{add(root);}};
+//        while (!queue.isEmpty()){
+//            int n=queue.size();
+//            List<Node> list=new ArrayList<>();
+//            for (int i=0;i<n;i++){
+//                Node poll = queue.poll();
+//                list.add(poll);
+//                if(poll.left!=null)queue.add(poll.left);
+//                if(poll.right!=null)queue.add(poll.right);
+//            }
+//            for (int i=0;i<n-1;i++){
+//                Node pre=list.get(i);
+//                Node next=list.get(i+1);
+//                pre.next=next;
+//            }
+//        }
+//        return root;
+//
+//    }
+
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if (root==null){
+            return new TreeNode(val);
+        }
+        TreeNode ans=root;
+        while(root!=null){
+            if(val<root.val){
+                if(root.left==null){
+                    TreeNode treeNode = new TreeNode(val);
+                    root.left=treeNode;
+                    break;
+                }else {
+                    root=root.left;
+                }
+            }else if(val>root.val){
+                if(root.right==null){
+                    TreeNode treeNode = new TreeNode(val);
+                    root.right=treeNode;
+                    break;
+                }
+                else{
+                    root=root.right;
+                }
+            }
+        }
+        return ans;
+    }
+
+
 }
+
