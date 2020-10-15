@@ -1213,6 +1213,222 @@ public class meiriyiti {
         return ans;
     }
 
+    public int minimumOperations(String leaves) {
+        int n=leaves.length();
+        int[][] f=new int[n][3];
+        f[0][0]=leaves.charAt(0)=='y'?1:0;
+        f[0][1]=f[0][2]=f[1][2]=Integer.MAX_VALUE;
+        for (int i=1;i<n;i++){
+            int isRed=leaves.charAt(i)=='r'?1:0;
+            int isYellow=leaves.charAt(i)=='y'?1:0;
+            f[i][0]=f[i-1][0]+isYellow;
+            f[i][1]=Math.min(f[i-1][0],f[i-1][1])+isRed;
+            if (i>=2){
+                f[i][2]=Math.min(f[i-1][1],f[i-1][2])+isYellow;
+            }
+        }
+        return f[n-1][2];
+    }
 
+    public int numJewelsInStones(String J, String S) {
+        char[] diamond = J.toCharArray();
+        Set<Character> set=new HashSet<>();
+        for (char c:diamond)set.add(c);
+        int ans=0;
+        for(char c:S.toCharArray()){
+            if (set.contains(c))ans++;
+        }
+        return ans;
+    }
+
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<nums.length;i++) {
+            if (map.containsKey(target-nums[i])) {
+                return new int[]{i, map.get(target-nums[i])};
+            } else {
+                map.put(nums[i],i);
+            }
+        }
+        return new int[]{};
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int carry=0;
+        ListNode head=new ListNode(-1),tail=head;
+        while (l1!=null||l2!=null){
+            int v0=l1==null?0:l1.val;
+            int v2=l2==null?0:l2.val;
+            int sum=v0+v2+carry;
+            carry=sum/10;
+            sum=sum%10;
+            ListNode listNode = new ListNode(sum);
+            tail.next=listNode;
+            tail=tail.next;
+            if (l1!=null)l1=l1.next;
+            if (l2!=null)l2=l2.next;
+        }
+        if (carry!=0){
+            tail.next=new ListNode(carry);
+        }
+        return head.next;
+    }
+
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> ans=new ArrayList<>();
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length-3; i++) {
+            if (i>0&&nums[i]==nums[i-1]){
+                continue;
+            }
+            if(nums[i]+nums[i+1]+nums[i+2]+nums[i+3]>target)break;
+            if(nums[i]+nums[nums.length-3]+nums[nums.length-2]+nums[nums.length-1]<target)continue;
+            for (int j = i+1; j < nums.length-2; j++) {
+                if (j>i+1&&nums[j]==nums[j-1]){
+                    continue;
+                }
+                if(nums[i]+nums[j]+nums[j+1]+nums[j+2]>target)break;
+                if(nums[i]+nums[j]+nums[nums.length-2]+nums[nums.length-1]<target)continue;
+                int l=j+1,r=nums.length-1;
+                while (l<r){
+                    if(nums[i]+nums[j]+nums[l]+nums[r]==target){
+                        ans.add(Arrays.asList(nums[i],nums[j],nums[l],nums[r]));
+                        while (l<r&&nums[l]==nums[l+1])l++;
+                        while (l<r&&nums[r]==nums[r-1])r--;
+                        r--;
+                    }else if (nums[i]+nums[j]+nums[l]+nums[r]<target){
+                        l++;
+                    }else {
+                        r--;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    public void sortColors(int[] nums) {
+        int p=0,q=nums.length-1;
+        for (int i=0;i<=q;i++){
+            if(nums[i]==0){
+                nums[i]=nums[p];
+                nums[p]=0;
+                p++;
+            }
+            if(nums[i]==2){
+                nums[i]=nums[q];
+                nums[q]=2;
+                q--;
+                i--;
+            }
+        }
+    }
+
+    public void reverseString(char[] s) {
+        int i=0,j=s.length-1;
+        while (i<=j){
+            char temp=s[i];
+            s[i++]=s[j];
+            s[j--]=temp;
+        }
+    }
+
+    public boolean hasCycle(ListNode head) {
+        if(head==null)return false;
+        ListNode slow=head,fast=head.next;
+        while (fast!=slow){
+            if (fast==null||fast.next==null)return false;
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        return true;
+    }
+
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow=head,fast=head;
+        while (true){
+            if (fast==null||fast.next==null)return null;
+            slow=slow.next;
+            fast=fast.next.next;
+            if (fast==slow)break;
+        }
+        fast=head;
+        while (fast!=slow){
+            fast=fast.next;
+            slow=slow.next;
+        }
+        return fast;
+    }
+
+    TreeNode pre=null;
+    int min=Integer.MAX_VALUE;
+    public int getMinimumDifference(TreeNode root) {
+        findMin(root);
+        return min;
+    }
+
+    public void findMin(TreeNode root){
+        if (root==null)return;
+        findMin(root.left);
+        if (pre!=null)min=Math.min(min,root.val-pre.val);
+        pre=root;
+        findMin(root.right);
+    }
+
+    public ListNode swapPairs(ListNode head) {
+        ListNode dummyHead=new ListNode(-1);
+        dummyHead.next=head;
+        ListNode temp=dummyHead;
+        while (temp.next!=null&&temp.next.next!=null){
+            ListNode node1=temp.next;
+            ListNode node2=temp.next.next;
+            temp.next=node2;
+            node1.next=node2.next;
+            node2.next=node1;
+            temp=node1;
+        }
+        return dummyHead.next;
+    }
+
+    public List<String> commonChars(String[] A) {
+        int[] min=new int[26];
+        Arrays.fill(min,Integer.MAX_VALUE);
+        for (String a:A){
+            int[] temp=new int[26];
+            for (int i=0;i<a.length();i++){
+                temp[a.charAt(i)-'a']++;
+            }
+            for (int i=0;i<26;i++){
+                min[i]=Math.min(min[i],temp[i]);
+            }
+        }
+        List<String> ans=new ArrayList<>();
+        for (int i=0;i<26;i++){
+            for (int j=0;j<min[i];j++){
+                ans.add(String.valueOf((char)(i+'a')));
+            }
+        }
+        return ans;
+    }
+
+//    public Node connect(Node root) {
+//        if (root==null)return null;
+//        Queue<Node> queue=new LinkedList<>();
+//        queue.add(root);
+//        while (!queue.isEmpty()){
+//            int n=queue.size();
+//            Node pre=null;
+//            for (int i=0;i<n;i++){
+//                Node poll = queue.poll();
+//                if (pre!=null){
+//                    pre.next=poll;
+//                }
+//                pre=poll;
+//                if (poll.left!=null)queue.add(poll.left);
+//                if (poll.right!=null)queue.add(poll.right);
+//            }
+//        }
+//        return root;
+//    }
 }
 
